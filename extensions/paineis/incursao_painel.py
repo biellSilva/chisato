@@ -35,6 +35,7 @@ class IncurPaineis(commands.Cog):
             self.membro_menu.name, type=self.membro_menu.type)
         self.bot.tree.remove_command(
             self.membro_menu_2.name, type=self.membro_menu_2.type)
+        
 
     async def listagem(self, interaction: discord.Interaction, message: discord.Message):
         '''Listagem dos campos da embed'''
@@ -50,7 +51,7 @@ class IncurPaineis(commands.Cog):
                 new_member = interaction.guild.get_member(int(re.sub(r'[^0-9]', '', member)))
                 msg += f'\n{new_member.display_name}'
 
-        return await interaction.edit_original_response(msg, ephemeral=True)
+        return await interaction.edit_original_response(msg)
 
 
     async def adicionar_membro(self, interaction: discord.Interaction, message: discord.Message):
