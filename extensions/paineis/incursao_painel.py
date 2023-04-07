@@ -12,15 +12,15 @@ class IncurPaineis(commands.Cog):
         self.bot = bot
         
         self.lista_menu = app_commands.ContextMenu(
-            name='Listar Membros do Grupo',
+            name='List Members',
             callback=self.listagem
         )
         self.membro_menu = app_commands.ContextMenu(
-            name='Adicionar Membro ao Grupo',
+            name='Add Member',
             callback=self.adicionar_membro
         )
         self.membro_menu_2 = app_commands.ContextMenu(
-            name='Remover Membro do Grupo',
+            name='Remove Member',
             callback=self.remover_membro
         )
 
@@ -51,8 +51,8 @@ class IncurPaineis(commands.Cog):
                 new_member = interaction.guild.get_member(int(re.sub(r'[^0-9]', '', member)))
                 msg += f'\n{new_member.display_name}'
 
-        return await interaction.edit_original_response(msg)
-
+        await interaction.edit_original_response(content=msg)
+        return
 
     async def adicionar_membro(self, interaction: discord.Interaction, message: discord.Message):
 
