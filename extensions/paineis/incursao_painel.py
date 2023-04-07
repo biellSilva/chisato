@@ -154,9 +154,10 @@ class IncurPaineis(commands.Cog):
             ind += 1
             if membro.mention in field.value:
                 
-                embed[0].set_field_at(ind, name=field.name, value=field.value+f'\n{membro.mention}')
+                embed[0].set_field_at(ind, name=field.name, value=field.value.replace(f'\n{membro.mention}', ''))
+
                 if not field.name.lower() == 'reserve':
-                    embed[1].set_field_at(ind, name=field.name, value=int(embed[1].fields[ind].value)-1)
+                    embed[1].set_field_at(ind, name=field.name, value=int(embed[1].fields[ind].value)+1)
 
                 await message.edit(embeds=embed)
 
