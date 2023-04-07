@@ -106,14 +106,18 @@ class IncurPaineis(commands.Cog):
                 if 'tank' in field.name.lower():
                     ind = 2
 
-                if membro.mention not in field.value:
-                    embed. embed[0].fields[ind].value
+                if int(embed[1].fields[ind].value) <= 0:
+                    em.description = f'**{field.name}** is full'
+                    return await interaction.edit_original_response(embed=em)
 
-                    await message.edit(embeds=embed)
-                    em.description = f'**{membro}** added to **{field.name}**'
-                    await interaction.followup.send(embed=em, ephemeral=True)
-                    await response.delete()
-                    return
+                embed[0].set_field_at(ind, name=field.name, value=field.value+f'\n{membro.mention}')
+                embed[1].set_field_at(ind, name=field.name, value=int(embed[1].fields[ind].value)-1)
+
+                await message.edit(embeds=embed)
+                em.description = f'**{membro}** added to **{field.name}**'
+                await interaction.edit_original_response(embed=em)
+                await response.delete()
+                return
 
     async def remover_membro(self, interaction: discord.Interaction, message: discord.Message):
         '''Remover o Membro'''
