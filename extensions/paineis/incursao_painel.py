@@ -123,6 +123,53 @@ class IncurPaineis(commands.Cog):
     async def remover_membro(self, interaction: discord.Interaction, message: discord.Message):
         '''Remover o Membro'''
 
+        await interaction.response.defer(ephemeral=True, thinking=True)
+
+        embed = message.embeds
+
+        em = discord.Embed(color=config.cinza, description='')
+
+        if not interaction.user.guild_permissions.kick_members:
+            em.description = 'You do not have permissions for this'
+            await interaction.edit_original_response(embed=em)
+            return
+
+        em.description = f'Inform a member \nex.: @biell'
+        await interaction.edit_original_response(embed=em)
+
+        def check(response: discord.Message):
+            return response.author == interaction.user and response.channel == interaction.channel
+
+        response: discord.Message = await self.bot.wait_for('message', check=check)
+
+        try:
+            membro = response.mentions[0]
+        except:
+            em.description = f'A member mention is needed'
+            await interaction.edit_original_response(embed=em)
+            return await response.delete()
+
+        ind = -1
+        for field in embed[0].fields:
+            ind += 1
+            if membro.mention in field.value:
+                
+                embed[0].set_field_at(ind, name=field.name, value=field.value+f'\n{membro.mention}')
+                if not field.name.lower() == 'reserve':
+                    embed[1].set_field_at(ind, name=field.name, value=int(embed[1].fields[ind].value)-1)
+
+                await message.edit(embeds=embed)
+
+                em.description = f'**{membro.mention}** removed from **{field.name}**'
+                await interaction.edit_original_response(embed=em)
+                await response.delete()
+                return
+
+        em.description = f'**{membro.mention}** not found in this group'
+        await interaction.edit_original_response(embed=em)
+        await response.delete()
+        return
+
 
 async def setup(bot):
     await bot.add_cog(IncurPaineis(bot))
