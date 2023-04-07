@@ -11,6 +11,10 @@ class ColorsCommand(commands.Cog):
     async def colors(self, ctx: commands.Context, name: str, hex: str):
         '''Create role with hex color'''
 
+        if not ctx.author.guild_permissions.kick_members:
+            await ctx.reply('Missing permission')
+            return
+
         role = await ctx.guild.create_role(name=name, colour=int(hex.replace('#', ''), 16))
         
         await ctx.guild.edit_role_positions({role: len(ctx.guild.roles)-7})
