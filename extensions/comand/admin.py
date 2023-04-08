@@ -29,6 +29,7 @@ class AdminCommands(commands.Cog):
                            ID: {member.id}
                            Display Name: {member.display_name}
                            Bot: {member.bot}
+                           Status: {member.status}
                            Activity: {member.activity}
                            Color: {member.color}
                            Timed Out: {member.is_timed_out() if member.is_timed_out() is False else member.timed_out_until}
@@ -42,7 +43,6 @@ class AdminCommands(commands.Cog):
         
         if member.roles:
             roles = ''
-            
             for role in member.roles:
                 if not role.is_default():
                     roles +=f'\n{role.mention}'
