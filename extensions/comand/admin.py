@@ -30,9 +30,9 @@ class AdminCommands(commands.Cog):
                            Activity: {member.activity}
                            Color: {member.color}
                            Timed Out: {member.is_timed_out() if member.is_timed_out() is False else member.timed_out_until}
-                           Discord Member Since: {member.created_at}
-                           Premium Since: {member.premium_since}
-                           Guild Member Since: {member.joined_at}
+                           Discord Member Since: <t:{int(member.created_at.timestamp())}:f>
+                           Guild Member Since: {"None" if member.joined_at is None else f"<t:{int(member.joined_at.timestamp())}:f>"}
+                           Premium Since: {"None" if member.premium_since is None else f"<t:{int(member.premium_since.timestamp())}:f>"}
                            ''')
         em.set_thumbnail(url=member.display_avatar.url)
 
