@@ -2,6 +2,7 @@ import discord
 
 from discord import app_commands
 from discord.ext import commands
+from typing import Optional
 
 from extensions import config
 
@@ -17,7 +18,8 @@ class AdminCommands(commands.Cog):
 
     @user.command(name='check', description='Check the user parameters')
     @app_commands.checks.has_permissions(kick_members=True)
-    async def check_user(self, interaction: discord.Interaction, member: discord.Member):
+    async def check_user(self, interaction: discord.Interaction, member: Optional[discord.Member]):
+        
         '''Check the member'''
         
         member = member or interaction.user
