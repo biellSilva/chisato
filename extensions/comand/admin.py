@@ -19,7 +19,7 @@ class AdminCommands(commands.Cog):
     @user.command(name='check', description='Check the user parameters')
     @app_commands.checks.has_permissions(kick_members=True)
     async def check_user(self, interaction: discord.Interaction, member: Optional[discord.Member]):
-        
+
         '''Check the member'''
         
         member = member or interaction.user
@@ -37,9 +37,12 @@ class AdminCommands(commands.Cog):
                            Premium Since: {"None" if member.premium_since is None else f"<t:{int(member.premium_since.timestamp())}:f>"}
                            ''')
         em.set_thumbnail(url=member.display_avatar.url)
-
         if member.banner:
             em.set_image(url=member.banner.url)
+        
+        if member.roles:
+            roles = [role.mention for role in member.roles]
+            em.add_field(name='Roles', value=roles)
         
         await interaction.response.send_message(embed=em, ephemeral=True)
 
