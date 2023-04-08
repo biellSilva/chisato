@@ -41,7 +41,12 @@ class AdminCommands(commands.Cog):
             em.set_image(url=member.banner.url)
         
         if member.roles:
-            roles = [role.mention for role in member.roles]
+            roles = ''
+            
+            for role in member.roles:
+                if not role.is_default():
+                    roles +=f'\n{role.mention}'
+
             em.add_field(name='Roles', value=roles)
         
         await interaction.response.send_message(embed=em, ephemeral=True)
