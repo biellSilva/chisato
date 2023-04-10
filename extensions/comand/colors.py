@@ -4,12 +4,18 @@ from discord import app_commands
 from discord.ext import commands
 
 from extensions import config
+from extensions.views.colors_view import ColorsView
 
 
 class ColorsCommand(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.colors_view = ColorsView(timeout=None)
+
+    async def cog_load(self):
+        self.bot.add_view(self.colors_view)
+        
 
     @commands.has_permissions(kick_members=True)
     @commands.command()
