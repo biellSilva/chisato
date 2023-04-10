@@ -27,6 +27,77 @@ class Groups(commands.Cog):
 
     raid = app_commands.Group(name='raid', description='Create your own group for ToF raids', parent=group)
 
+    @group.command(name='create', description='Create your own group for in-game things')
+    @app_commands.checks.has_role(config.tof_member)
+    @app_commands.describe(event='Discord Role', data='ex.: dd/mm/yyyy HH:MM', level='Minimal level', slots='How many vacancies?', description='Extra information', color='hex color: #fcba03')
+    async def group_create(self, interaction: discord.Interaction, event: discord.Role, data: str, level: Optional[int], slots: Optional[int], description: Optional[str], color: Optional[str]):
+        '''Create your own in-game group'''
+
+        await interaction.response.defer(ephemeral=True, thinking=True)
+
+        guild = interaction.guild
+        groups_channel = guild.get_channel(config.groups_channel)
+
+        error_embed = discord.Embed(color=config.vermelho, description='',
+                                    title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
+
+        try:
+            data = int(time.mktime(datetime.datetime.strptime(
+                data, '%d/%m/%Y %H:%M').timetuple()))
+        except:
+            try:
+                data = int(time.mktime(datetime.datetime.strptime(
+                    f'{datetime.date.today()} {data}', '%Y-%m-%d %H:%M').timetuple()))
+            except:
+                try:
+                    data = int(time.mktime(datetime.datetime.strptime(
+                        f'{data} 21:00', '%d/%m/%Y %H:%M').timetuple()))
+                except:
+                    error_embed.description = (f'Invalid datetime format:\n'
+                                               '**Expected:**\n'
+                                               '`22/12/2022 21:00`\n'
+                                               '`21:00`\n'
+                                               '`22/12/2022`\n\n'
+                                               f'**Received:** {data}')
+
+                    await interaction.edit_original_response(embed=error_embed)
+                    return
+
+        if color:
+            if len(color) == len('#20B2AA'):
+                try:
+                    color = literal_eval(color.replace(
+                        ' ', '').replace('#', '0x'))
+                except:
+                    error_embed.description = ('**Invalid HEX:**\n'
+                                               f'**Expected:** #20B2AA\n'
+                                               f'**Received:** {color}')
+                    await interaction.edit_original_response(embed=error_embed)
+                    return
+            else:
+                error_embed.description = ('**Invalid HEX:**\n'
+                                           f'**Expected:** #20B2AA | Lenght: {len("#20B2AA")}\n'
+                                           f'**Received:** {color} | Lenght: {len(color)}')
+                await interaction.edit_original_response(embed=error_embed)
+                return
+        else:
+            color = config.cinza
+
+        em = discord.Embed(title=f'{event.name} {"" if level is None else f"[lvl: {level}]"}',
+                           color=color,
+                           description=f'''
+                        *Group start: <t:{data}:F>, <t:{data}:R>*
+
+                        {"" if description is None else f"Description: **{description}**"}
+                        ''')
+
+        em.add_field(name='Members', value='\u200B')
+        if slots:
+            em.add_field(name='Vacancies', value=slots)
+
+
+        await interaction.edit_original_response(content=f'Done! {groups_channel.mention}')
+        await groups_channel.send(content=event.mention, embed=em, view=IncursaoView())
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
     @app_commands.checks.has_role(config.tof_member)
