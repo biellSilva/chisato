@@ -42,7 +42,7 @@ class Groups(commands.Cog):
         groups_channel = guild.get_channel(config.groups_channel)
 
         error_embed = discord.Embed(color=config.vermelho, description='',
-                                    title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
+                                    title='Error')
         
         if not event.mentionable or event.name.lower() in ('admin', 'staff', 'oficial'):
             error_embed.description = f'{event.mention} isn\'t a in-game role'
@@ -105,7 +105,7 @@ class Groups(commands.Cog):
             em.add_field(name='Vacancies', value=slots)
 
         await interaction.edit_original_response(content=f'Done! {groups_channel.mention}')
-        return await groups_channel.send(content=event.name, embed=em, view=GroupsView())
+        return await groups_channel.send(content=event.mention, embed=em, view=GroupsView())
 
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
@@ -121,7 +121,7 @@ class Groups(commands.Cog):
         incursao_role = guild.get_role(config.raid)
 
         error_embed = discord.Embed(color=config.vermelho, description='',
-                                    title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
+                                    title='Error')
 
         try:
             data = int(time.mktime(datetime.datetime.strptime(
@@ -207,7 +207,7 @@ class Groups(commands.Cog):
         incursao_role = guild.get_role(config.raid)
 
         error_embed = discord.Embed(color=config.vermelho, description='',
-                            title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
+                            title='Error')
 
         try:
             data = int(time.mktime(datetime.datetime.strptime(
