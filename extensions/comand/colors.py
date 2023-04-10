@@ -29,7 +29,7 @@ class ColorsCommand(commands.Cog):
     async def embed_colors(self, interaction: discord.Interaction):
         '''Create a embed colors'''
 
-        em=discord.Embed(color=config.cinza, title='Auto Color', description=f'Countdown: <t:{int(time())+180}:R>')
+        em=discord.Embed(color=config.cinza, title='Auto Color', description=f'Countdown: <t:{int(time())+180}:R>\n\n')
         em.set_footer(text='Choose your color')
 
         for color_id in config.colors_list:
