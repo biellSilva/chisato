@@ -128,20 +128,6 @@ class Incursao(commands.Cog):
         await interaction.edit_original_response(content=f'Done! {incursao_channel.mention}')
         await incursao_channel.send(content= incursao_role.mention, embeds=[em, em1], view=IncursaoView())
 
-    @oficial.error
-    async def oficial_error(self, interaction: discord.Interaction, err):
-
-        tof_member = interaction.guild.get_role(config.tof_member)
-
-        error_embed = discord.Embed(color=config.cinza, title='Error', description='')
-
-        if isinstance(err, app_commands.MissingRole):
-            error_embed.description=f'Missing Role: {tof_member.mention}'
-            await interaction.response.send_message(embed=error_embed, ephemeral=True, delete_after=10)
-        
-        else:
-            print(f'Ignoring exception in command {interaction.command}:', file=sys.stderr)
-            traceback.print_exception(type(err), err, err.__traceback__, file=sys.stderr)
 
 async def setup(bot):
     await bot.add_cog(Incursao(bot))
