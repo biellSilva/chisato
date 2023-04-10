@@ -94,11 +94,11 @@ class Groups(commands.Cog):
 
         em = discord.Embed(title=f'{event.name} {"" if level is None else f"[lvl: {level}]"}',
                            color=color,
-                           description=f'''
-                        *Group start: <t:{data}:F>, <t:{data}:R>*
-
-                        {"" if description is None else f"Description: **{description}**"}
-                        ''')
+                           description=f'*Group start: <t:{data}:F>, <t:{data}:R>*\n\n'
+                                       f'{"" if description is None else f"Description: **{description}**"}',
+                           timestamp=datetime.datetime.fromtimestamp(data))
+        
+        em.set_footer(text=f'{interaction.user.display_name} - {interaction.user.id}', icon_url=interaction.user.display_avatar)
 
         em.add_field(name='Members', value='\u200B')
         if slots:
