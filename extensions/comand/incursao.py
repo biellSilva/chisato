@@ -9,6 +9,7 @@ from ast import literal_eval
 
 from extensions import config
 from extensions.views.incursao_view import IncursaoView
+from extensions.views.groups_view import GroupsView
 
 
 @app_commands.guild_only()
@@ -95,9 +96,9 @@ class Groups(commands.Cog):
         if slots:
             em.add_field(name='Vacancies', value=slots)
 
-
         await interaction.edit_original_response(content=f'Done! {groups_channel.mention}')
-        await groups_channel.send(content=event.mention, embed=em, view=IncursaoView())
+        return await groups_channel.send(content=event.mention, embed=em, view=GroupsView())
+
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
     @app_commands.checks.has_role(config.tof_member)
