@@ -5,6 +5,8 @@ from extensions import config
 
 async def ensure_group(interaction: discord.Interaction, button: discord.ui.Button):
 
+    await interaction.response.defer(ephemeral=True, thinking=True)
+
     tof_member = interaction.guild.get_role(config.tof_member)
 
     em = discord.Embed(color=config.cinza, description='')
@@ -12,7 +14,7 @@ async def ensure_group(interaction: discord.Interaction, button: discord.ui.Butt
     if tof_member not in interaction.user.roles:
         em.description = f'Missing Role: {tof_member.mention}'
         em.title = 'Error'
-        return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
+        return await interaction.edit_original_response(embed=em)
 
     for color_id in config.colors_list:
         color = interaction.guild.get_role(color_id)
@@ -25,7 +27,7 @@ async def ensure_group(interaction: discord.Interaction, button: discord.ui.Butt
 
     em.description += f'\nAdded {color_add.mention}\n'
 
-    await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
+    await interaction.edit_original_response(embed=em)
     return
 
 

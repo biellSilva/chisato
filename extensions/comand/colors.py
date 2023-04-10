@@ -44,7 +44,7 @@ class ColorsCommand(commands.Cog):
 
         for color_id in colors:
             color = ctx.guild.get_role(color_id)
-            em.description+=f'{color.mention} - {color.color}\n'
+            em.description+=f'{color.mention}\n'
 
         await ctx.send(embed=em, view=ColorsView())
 
