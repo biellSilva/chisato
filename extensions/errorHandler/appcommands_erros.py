@@ -37,7 +37,7 @@ class AppErrorHandler(commands.Cog):
             return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
 
         if isinstance(err, app_commands.MissingRole):
-            em.description=f'Missing role {err.missing_role}'
+            em.description=f'Missing role {interaction.guild.get_role(int(err.missing_role)).mention}'
             return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
 
         print(f'\n{bcolors.WARNING}{"! ! "*30}\n'
