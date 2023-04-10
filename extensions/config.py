@@ -35,6 +35,8 @@ test_guild = 1000974290801410138
 
 #   CANAIS
 incursao_channel = 1093317467960528966
+groups_channel = 1093317594930479134
+
 discord_suggest = 1093303508570218599
 guild_name_suggest = 1093990876079997040
 
