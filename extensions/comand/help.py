@@ -46,17 +46,17 @@ class Help(commands.Cog):
         if input:
             for cog in self.bot.cogs:
                 if cog.lower() == input.lower():
-                    emb = discord.Embed(title=f'{cog} - Commands', description=self.bot.cogs[cog].__doc__,
+                    emb = discord.Embed(title=f'{cog} Commands', description=self.bot.cogs[cog].__doc__,
                                         color=config.cinza)
 
-                    for command in self.bot.get_cog(cog).get_commands():
-                        if not command.hidden:
-                            emb.add_field(
-                                name=f"{self.bot.command_prefix}{command.name}", value=command.help, inline=False)
+                    # for command in self.bot.get_cog(cog).get_commands():
+                    #     if not command.hidden:
+                    #         emb.add_field(
+                    #             name=f"{self.bot.command_prefix}{command.name}", value=command.help, inline=False)
                             
                     for command in self.bot.get_cog(cog).get_app_commands():
-                        emb.add_field(
-                                name=f"/{command.name}", value=command.description, inline=False)
+                        emb.add_field(name=f"/{command.name} {command.parent}", value=command.description, inline=False)
+
                     break
 
         await ctx.send(embed=emb)

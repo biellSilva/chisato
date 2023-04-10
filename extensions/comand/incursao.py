@@ -12,9 +12,9 @@ from extensions.views.incursao_view import IncursaoView
 
 
 @app_commands.guild_only()
-class Raids(commands.Cog):
+class Groups(commands.Cog):
 
-    '''Raids commands'''
+    '''A Collection of commands related to in-game groups'''
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -130,5 +130,5 @@ class Raids(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Raids(bot))
+    await bot.add_cog(Groups(bot))
 
