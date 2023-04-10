@@ -37,7 +37,7 @@ class GroupsView(discord.ui.View):
             embed[0].set_field_at(0, name=field.name, value=field.value+f'\n{user.mention}')
 
             if len(embed[0].fields) == 2:
-                if int(embed[0].fields[int(button.custom_id)].value) <= 0:
+                if int(embed[0].fields[1].value) <= 0:
                     em.description = f'This group is full'
                     await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
                     return

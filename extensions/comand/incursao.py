@@ -20,9 +20,11 @@ class Groups(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.incursao_view = IncursaoView(timeout=None)
+        self.groups_view = GroupsView(timeout=None)
     
     async def cog_load(self):
         self.bot.add_view(self.incursao_view)
+        self.bot.add_view(self.groups_view)
 
     group = app_commands.Group(name='group', description='Create your own group')
 
@@ -41,6 +43,12 @@ class Groups(commands.Cog):
 
         error_embed = discord.Embed(color=config.vermelho, description='',
                                     title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
+        
+        if not event.mentionable or event.name.lower() in ('admin', 'staff', 'oficial'):
+            error_embed.description = f'{event.mention} isn\'t a in-game role'
+            await interaction.edit_original_response(embed=error_embed)
+            return
+
 
         try:
             data = int(time.mktime(datetime.datetime.strptime(
@@ -97,11 +105,10 @@ class Groups(commands.Cog):
             em.add_field(name='Vacancies', value=slots)
 
         await interaction.edit_original_response(content=f'Done! {groups_channel.mention}')
-        return await groups_channel.send(content=event.mention, embed=em, view=GroupsView())
+        return await groups_channel.send(content=event.name, embed=em, view=GroupsView())
 
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
-    @app_commands.checks.has_role(config.tof_member)
     @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
     async def raids(self, interaction: discord.Interaction, level: int, data: str, description: str, color: Optional[str]):
 
@@ -182,7 +189,7 @@ class Groups(commands.Cog):
 
 
     @raid.command(name='official')
-    @app_commands.checks.has_role(config.tof_member)
+    @app_commands.checks.has_permissions(kick_members=True)
     @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
     @app_commands.choices(
         groups=[
