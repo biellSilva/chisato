@@ -6,6 +6,9 @@ tz_brazil = pytz.timezone('America/Sao_Paulo')
 #   HTTPS Regex
 https_regex = r'(https?://[^\s]+)'
 
+#   OwnerID
+owner_id = 420634633793699851
+
 
 #   EMOTES
 confirm = '✅'

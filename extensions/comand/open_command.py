@@ -9,7 +9,9 @@ from typing import Optional
 from extensions import config
 
 
-class OpenCommands(commands.Cog):
+class Commands(commands.Cog):
+
+    '''Uncategorized Commands'''
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -71,4 +73,4 @@ class OpenCommands(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(OpenCommands(bot))
+    await bot.add_cog(Commands(bot))

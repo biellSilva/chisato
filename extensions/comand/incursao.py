@@ -1,8 +1,6 @@
 import discord
 import time
 import datetime
-import sys
-import traceback
 
 from discord import app_commands
 from discord.ext import commands
@@ -14,7 +12,9 @@ from extensions.views.incursao_view import IncursaoView
 
 
 @app_commands.guild_only()
-class Incursao(commands.Cog):
+class Raids(commands.Cog):
+
+    '''Raids commands'''
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -130,5 +130,5 @@ class Incursao(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Incursao(bot))
+    await bot.add_cog(Raids(bot))
 

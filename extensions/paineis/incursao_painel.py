@@ -7,7 +7,10 @@ from discord import app_commands
 from extensions import config
 
 
-class IncurPaineis(commands.Cog):
+class Raids_Context(commands.Cog):
+
+    '''Raids Context Menus'''
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         
@@ -173,4 +176,4 @@ class IncurPaineis(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(IncurPaineis(bot))
+    await bot.add_cog(Raids_Context(bot))

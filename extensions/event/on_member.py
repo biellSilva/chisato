@@ -8,6 +8,8 @@ from extensions import config
 
 class On_member(commands.Cog):
 
+    '''On Member Listeners'''
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 

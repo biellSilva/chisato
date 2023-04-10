@@ -7,7 +7,9 @@ from typing import Optional
 from extensions import config
 
 
-class AdminCommands(commands.Cog):
+class Admin(commands.Cog):
+
+    '''Admin Commands'''
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -52,4 +54,4 @@ class AdminCommands(commands.Cog):
         await interaction.response.send_message(embed=em, ephemeral=True)
 
 async def setup(bot):
-    await bot.add_cog(AdminCommands(bot))
+    await bot.add_cog(Admin(bot))
