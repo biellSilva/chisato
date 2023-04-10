@@ -27,10 +27,6 @@ class Groups(commands.Cog):
 
     raid = app_commands.Group(name='raid', description='Create your own group for ToF raids', parent=group)
 
-    @group.command(name='create')
-    async def groups(self, interaction: discord.Interaction):
-        await interaction.response.send_message('Hi!')
-
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
     @app_commands.checks.has_role(config.tof_member)
