@@ -53,5 +53,23 @@ class Admin(commands.Cog):
         
         await interaction.response.send_message(embed=em, ephemeral=True)
 
+
+    @admin.command(name='clean', description='Delete all messages from this channel')
+    @app_commands.checks.has_permissions(manage_messages=True)
+    async def clean_channel(self, interaction: discord.Interaction, user: Optional[discord.Member], limit: int = 100, ):
+        '''Clean the channel'''
+
+        await interaction.response.defer(thinking=True, ephemeral=True)
+
+        def check(message: discord.Message):
+            return message.author == user and message.channel == interaction.channel
+
+        if user:
+            await interaction.channel.purge(limit=limit, check=check, reason=f'{interaction.user} deleted')
+        else:
+            await interaction.channel.purge(limit=limit, reason=f'{interaction.user} deleted')
+
+        await interaction.edit_original_response(content='Done!')
+
 async def setup(bot):
     await bot.add_cog(Admin(bot))
