@@ -17,12 +17,12 @@ async def ensure_group(interaction: discord.Interaction, button: discord.ui.Butt
     for color_id in config.colors_list:
         color = interaction.guild.get_role(color_id)
         if color in interaction.user.roles:
-            await interaction.user.remove_roles(color_id)
+            await interaction.user.remove_roles(color)
             em.description+=f'Removed {color.mention}\n'
     
     color_add = interaction.guild.get_role(config.colors_list[int(button.custom_id)-1])
     await interaction.user.add_roles(color_add)
-    
+
     em.description += f'\nAdded {color_add.mention}\n'
 
     await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
