@@ -29,8 +29,6 @@ class AppErrorHandler(commands.Cog):
 
         em = discord.Embed(color=config.cinza,
                            description='')
-        em.set_footer(text=f'{interaction.user.display_name} - {interaction.user.id}',
-                      icon_url=interaction.user.display_avatar.url)
 
         if isinstance(err, app_commands.MissingPermissions):
             em.description=f'Missing permission'

@@ -109,6 +109,7 @@ class Groups(commands.Cog):
 
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
+    @app_commands.checks.has_role(config.tof_member)
     @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
     async def raids(self, interaction: discord.Interaction, level: int, data: str, description: str, color: Optional[str]):
 

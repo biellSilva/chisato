@@ -18,8 +18,6 @@ class CtxErrorHandler(commands.Cog):
         
         em = Embed(color=config.cinza,
                            description='')
-        em.set_footer(text=f'{ctx.author.display_name} - {ctx.author.id}',
-                      icon_url=ctx.author.display_avatar.url)
         
         ignore = commands.CommandNotFound
         err = getattr(err, 'original', err)
@@ -29,6 +27,10 @@ class CtxErrorHandler(commands.Cog):
         
         if isinstance(err, commands.DisabledCommand):
             em.description = f'{ctx.command} command is disabled'
+            return await ctx.send(embed=em)
+        
+        if isinstance(err, commands.NotOwner):
+            em.description = 'You are not my owner'
             return await ctx.send(embed=em)
         
         if isinstance(err, commands.NoPrivateMessage):

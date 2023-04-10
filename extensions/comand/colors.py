@@ -22,7 +22,7 @@ class Colors(commands.Cog):
 
         role = await ctx.guild.create_role(name=name, colour=int(hex.replace('#', ''), 16))
         
-        await ctx.guild.edit_role_positions({role: len(ctx.guild.roles)-7})
+        await ctx.guild.edit_role_positions({role: len(ctx.guild.roles)-5})
 
         await ctx.send(role.mention)
 
