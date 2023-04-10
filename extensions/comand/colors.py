@@ -14,7 +14,7 @@ class ColorsCommand(commands.Cog):
         self.bot = bot
 
     @commands.has_permissions(kick_members=True)
-    @commands.command()
+    @commands.command(name='role_colors')
     async def colors(self, ctx: commands.Context, name: str, hex: str):
         '''Create role with hex color'''
 

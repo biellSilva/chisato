@@ -83,4 +83,8 @@ class ColorsView(discord.ui.View):
 
         await ensure_group(interaction, button)
 
+    @discord.ui.button(custom_id='11', label='11', style=discord.ButtonStyle.grey)
+    async def button_10(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        await ensure_group(interaction, button)
 
