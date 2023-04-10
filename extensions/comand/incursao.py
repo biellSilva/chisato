@@ -23,12 +23,97 @@ class Groups(commands.Cog):
     async def cog_load(self):
         self.bot.add_view(self.incursao_view)
 
-    groups = app_commands.Group(name='groups', description='Create your own group')
+    group = app_commands.Group(name='group', description='Create your own group')
 
-    incursao = app_commands.Group(name='raid', description='Create your own group for ToF raids', parent=groups)
-    
+    raid = app_commands.Group(name='raid', description='Create your own group for ToF raids', parent=group)
 
-    @incursao.command(name='oficial')
+    @group.command(name='create')
+    async def groups(self, interaction: discord.Interaction):
+        await interaction.response.send_message('Hi!')
+
+
+    @raid.command(name='unofficial', description='Create your own group for ToF raids')
+    @app_commands.checks.has_role(config.tof_member)
+    @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
+    async def raids(self, interaction: discord.Interaction, level: int, data: str, description: str, color: Optional[str]):
+
+        '''Create your own group for ToF raids'''
+
+        await interaction.response.defer(ephemeral=True, thinking=True)
+
+        guild = interaction.guild
+        groups_channel = guild.get_channel(config.groups_channel)
+        incursao_role = guild.get_role(config.raid)
+
+        error_embed = discord.Embed(color=config.vermelho, description='',
+                                    title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
+
+        try:
+            data = int(time.mktime(datetime.datetime.strptime(
+                data, '%d/%m/%Y %H:%M').timetuple()))
+        except:
+            try:
+                data = int(time.mktime(datetime.datetime.strptime(
+                    f'{datetime.date.today()} {data}', '%Y-%m-%d %H:%M').timetuple()))
+            except:
+                try:
+                    data = int(time.mktime(datetime.datetime.strptime(
+                        f'{data} 21:00', '%d/%m/%Y %H:%M').timetuple()))
+                except:
+                    error_embed.description = (f'Invalid datetime format:\n'
+                                            '**Expected:**\n'
+                                            '`22/12/2022 21:00`\n'
+                                            '`21:00`\n'
+                                            '`22/12/2022`\n\n'
+                                            f'**Received:** {data}')
+
+                    await interaction.edit_original_response(embed=error_embed)
+                    return
+
+        if color:
+            if len(color) == len('#20B2AA'):
+                try:
+                    color = literal_eval(color.replace(
+                        ' ', '').replace('#', '0x'))
+                except:
+                    error_embed.description = ('**Invalid HEX:**\n'
+                                            f'**Expected:** #20B2AA\n'
+                                            f'**Received:** {color}')
+                    await interaction.edit_original_response(embed=error_embed)
+                    return
+            else:
+                error_embed.description = ('**Invalid HEX:**\n'
+                                        f'**Expected:** #20B2AA | Lenght: {len("#20B2AA")}\n'
+                                        f'**Received:** {color} | Lenght: {len(color)}')
+                await interaction.edit_original_response(embed=error_embed)
+                return
+        else:
+            color = config.cinza
+
+        em = discord.Embed(title=f'Raid [lvl: {level}]',
+                        color=color,
+                        description=f'''
+                        *Raid start: <t:{data}:F>, <t:{data}:R>*
+                        *Group start: <t:{data - 300}:F>, <t:{data - 300}:R>*
+
+                        Bosses: **{description}**
+                        ''')
+
+        em.add_field(name='DPS', value='\u200B')
+        em.add_field(name='SUP', value='\u200B')
+        em.add_field(name='TANK', value='\u200B')
+        em.add_field(name='RESERVE', value='\u200B')
+
+        em1 = discord.Embed(color=color)
+        em1.add_field(name='DPS Slots:', value=5)
+        em1.add_field(name='SUP Slots:', value=2)
+        em1.add_field(name='TANK Slots:', value=1)
+
+        await interaction.edit_original_response(content=f'Done! {groups_channel.mention}')
+        await groups_channel.send(content=incursao_role.mention, embeds=[em, em1], view=IncursaoView())
+
+
+    @raid.command(name='official')
     @app_commands.checks.has_role(config.tof_member)
     @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
     @app_commands.choices(
@@ -38,7 +123,7 @@ class Groups(commands.Cog):
             app_commands.Choice(name='24 Members / 3 Groups', value='24')])
     async def oficial(self, interaction: discord.Interaction, level: int, data: str, description: str, groups: str, color: Optional[str]):
 
-        '''ToF Oficial Raids'''
+        '''Create a official group for ToF raids'''
 
         await interaction.response.defer(ephemeral=True, thinking=True)
 
@@ -128,86 +213,7 @@ class Groups(commands.Cog):
         await interaction.edit_original_response(content=f'Done! {incursao_channel.mention}')
         await incursao_channel.send(content= incursao_role.mention, embeds=[em, em1], view=IncursaoView())
 
-    @groups.command(name='raid')
-    @app_commands.checks.has_role(config.tof_member)
-    @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
-    async def raids(self, interaction: discord.Interaction, level: int, data: str, description: str, color: Optional[str]):
-
-        '''ToF Raids'''
-
-        await interaction.response.defer(ephemeral=True, thinking=True)
-
-        guild = interaction.guild
-        groups_channel = guild.get_channel(config.groups_channel)
-        incursao_role = guild.get_role(config.raid)
-
-        error_embed = discord.Embed(color=config.vermelho, description='',
-                                    title='Error', timestamp=datetime.datetime.now(config.tz_brazil))
-
-        try:
-            data = int(time.mktime(datetime.datetime.strptime(
-                data, '%d/%m/%Y %H:%M').timetuple()))
-        except:
-            try:
-                data = int(time.mktime(datetime.datetime.strptime(
-                    f'{datetime.date.today()} {data}', '%Y-%m-%d %H:%M').timetuple()))
-            except:
-                try:
-                    data = int(time.mktime(datetime.datetime.strptime(
-                        f'{data} 21:00', '%d/%m/%Y %H:%M').timetuple()))
-                except:
-                    error_embed.description = (f'Invalid datetime format:\n'
-                                               '**Expected:**\n'
-                                               '`22/12/2022 21:00`\n'
-                                               '`21:00`\n'
-                                               '`22/12/2022`\n\n'
-                                               f'**Received:** {data}')
-
-                    await interaction.edit_original_response(embed=error_embed)
-                    return
-
-        if color:
-            if len(color) == len('#20B2AA'):
-                try:
-                    color = literal_eval(color.replace(
-                        ' ', '').replace('#', '0x'))
-                except:
-                    error_embed.description = ('**Invalid HEX:**\n'
-                                               f'**Expected:** #20B2AA\n'
-                                               f'**Received:** {color}')
-                    await interaction.edit_original_response(embed=error_embed)
-                    return
-            else:
-                error_embed.description = ('**Invalid HEX:**\n'
-                                           f'**Expected:** #20B2AA | Lenght: {len("#20B2AA")}\n'
-                                           f'**Received:** {color} | Lenght: {len(color)}')
-                await interaction.edit_original_response(embed=error_embed)
-                return
-        else:
-            color = config.cinza
-
-        em = discord.Embed(title=f'Raid [lvl: {level}]',
-                           color=color,
-                           description=f'''
-                           *Raid start: <t:{data}:F>, <t:{data}:R>*
-                           *Group start: <t:{data - 300}:F>, <t:{data - 300}:R>*
-
-                           Bosses: **{description}**
-                           ''')
-
-        em.add_field(name='DPS', value='\u200B')
-        em.add_field(name='SUP', value='\u200B')
-        em.add_field(name='TANK', value='\u200B')
-        em.add_field(name='RESERVE', value='\u200B')
-
-        em1 = discord.Embed(color=color)
-        em1.add_field(name='DPS Slots:', value=5)
-        em1.add_field(name='SUP Slots:', value=2)
-        em1.add_field(name='TANK Slots:', value=1)
-
-        await interaction.edit_original_response(content=f'Done! {groups_channel.mention}')
-        await groups_channel.send(content=incursao_role.mention, embeds=[em, em1], view=IncursaoView())
-
+    
 async def setup(bot):
     await bot.add_cog(Groups(bot))
 
