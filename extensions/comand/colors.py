@@ -15,7 +15,7 @@ class ColorsCommand(commands.Cog):
 
     async def cog_load(self):
         self.bot.add_view(self.colors_view)
-        
+
 
     @commands.has_permissions(kick_members=True)
     @commands.command()
@@ -46,7 +46,7 @@ class ColorsCommand(commands.Cog):
             color = ctx.guild.get_role(color_id)
             em.description+=f'{color.mention} - {color.color}\n'
 
-        await ctx.send(embed=em)
+        await ctx.send(embed=em, view=ColorsView())
 
 
 async def setup(bot):
