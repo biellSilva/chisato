@@ -171,7 +171,8 @@ class Groups(commands.Cog):
                         description=f'''
                         *Raid start: <t:{data}:F>, <t:{data}:R>*
                         *Group start: <t:{data - 300}:F>, <t:{data - 300}:R>*
-
+                        
+                        Leader: {interaction.user.mention}
                         Bosses: **{description}**
                         ''')
 
