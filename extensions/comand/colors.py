@@ -10,7 +10,7 @@ from extensions.views.colors_view import ColorsView
 
 class Colors(commands.Cog):
 
-    '''Self Roles Commands'''
+    '''Self color roles'''
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -29,7 +29,7 @@ class Colors(commands.Cog):
     @app_commands.command(name='colors')
     @app_commands.checks.has_role(config.tof_member)
     async def embed_colors(self, interaction: discord.Interaction):
-        '''Create a embed colors'''
+        '''Change your nickname color'''
 
         em=discord.Embed(color=config.cinza, title='Auto Color', description=f'Countdown: <t:{int(time())+30}:R>\n\n')
         em.set_footer(text='Choose your color')
@@ -38,7 +38,7 @@ class Colors(commands.Cog):
             color = interaction.guild.get_role(color_id)
             em.description+=f'{color.mention}\n'
 
-        await interaction.response.send_message(embed=em, ephemeral=True, view=ColorsView(timeout=30), delete_after=30)
+        await interaction.response.send_message(embed=em, ephemeral=True, view=ColorsView(timeout=30), delete_after=31)
 
 
 async def setup(bot):

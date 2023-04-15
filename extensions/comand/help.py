@@ -24,7 +24,7 @@ class Help(commands.Cog):
 
             cogs_desc = ''
             for cog in self.bot.cogs:
-                if 'error' in cog.lower() or 'on_' in cog.lower():
+                if len(self.bot.cogs[cog].get_commands()) == 0 and len(self.bot.cogs[cog].get_app_commands()) == 0:
                     continue
 
                 cogs_desc += f'**{cog}:** *{self.bot.cogs[cog].__doc__}*\n'

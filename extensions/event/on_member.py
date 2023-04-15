@@ -21,7 +21,7 @@ class On_member(commands.Cog):
         if member.bot:
             return
 
-        guild = self.bot.get_guild(config.avalon)
+        guild = self.bot.get_guild(config.henko)
         welcome_channel = guild.get_channel(config.member_log)
 
         em = discord.Embed(color=config.cinza, title='Member Joined',
@@ -39,7 +39,7 @@ class On_member(commands.Cog):
         if member.bot:
             return
 
-        guild = self.bot.get_guild(config.avalon)
+        guild = self.bot.get_guild(config.henko)
         welcome_channel = guild.get_channel(config.member_log)
 
         em = discord.Embed(color=config.cinza, title='Member Leave',
