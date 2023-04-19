@@ -1,4 +1,5 @@
 import discord
+import traceback
 
 from discord.ext import commands
 from discord import app_commands
@@ -37,11 +38,24 @@ class AppErrorHandler(commands.Cog):
         if isinstance(err, app_commands.MissingRole):
             em.description=f'Missing role {interaction.guild.get_role(int(err.missing_role)).mention}'
             return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
+        
+        if isinstance(err, app_commands.BotMissingPermissions):
+            return
+        
+        if isinstance(err, AttributeError):
+            em.description = f'Couldn\'t find'
+            return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
 
         print(f'\n{bcolors.WARNING}{"! ! "*30}\n'
               f'{bcolors.FAIL}{interaction.command} exception: ', file=stderr)
         print_exception(type(err), err, err.__traceback__, file=stderr)
         print(bcolors.ENDC)
+
+        txt = ''
+        for _ in traceback.format_exception(type(err), err, err.__traceback__):
+            txt += _+'\n'
+
+        await self.bot.get_user(self.bot.application.owner.id).send(content=f'```{txt}```')
 
 
 async def setup(bot):

@@ -5,7 +5,7 @@ from extensions import config
 
 class GroupsView(discord.ui.View):
 
-    @discord.ui.button(custom_id='0', label='Enter', style=discord.ButtonStyle.grey)
+    @discord.ui.button(custom_id='enter', label='Enter', style=discord.ButtonStyle.grey)
     async def button_enter(self, interaction: discord.Interaction, button: discord.ui.Button):
 
         '''Enter Button'''
@@ -50,7 +50,7 @@ class GroupsView(discord.ui.View):
             return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
             
 
-    @discord.ui.button(custom_id='button_DEL', style=discord.ButtonStyle.grey, emoji='❌')
+    @discord.ui.button(custom_id='DEL', style=discord.ButtonStyle.grey, emoji='❌')
     async def button_DEL(self, interaction: discord.Interaction, button: discord.ui.Button):
 
         '''Delete'''

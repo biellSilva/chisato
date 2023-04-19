@@ -115,7 +115,7 @@ class Raids_Context(commands.Cog):
                     return await interaction.edit_original_response(embed=em)
 
                 embed[0].set_field_at(ind, name=field.name, value=field.value+f'\n{membro.mention}')
-                embed[1].set_field_at(ind, name=field.name, value=int(embed[1].fields[ind].value)-1)
+                embed[1].set_field_at(ind, name=embed[1].fields[ind].name, value=int(embed[1].fields[ind].value)-1)
 
                 await message.edit(embeds=embed)
                 em.description = f'**{membro}** added to **{field.name}**'
@@ -160,7 +160,7 @@ class Raids_Context(commands.Cog):
                 embed[0].set_field_at(ind, name=field.name, value=field.value.replace(f'\n{membro.mention}', ''))
 
                 if not field.name.lower() == 'reserve':
-                    embed[1].set_field_at(ind, name=field.name, value=int(embed[1].fields[ind].value)+1)
+                    embed[1].set_field_at(ind, name=embed[1].fields[ind].name, value=int(embed[1].fields[ind].value)+1)
 
                 await message.edit(embeds=embed)
 
