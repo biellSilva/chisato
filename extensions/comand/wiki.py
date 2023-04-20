@@ -137,8 +137,8 @@ class Info(commands.Cog):
         try:
             re = requests.get(url=f'{tof_index}/matrices/{name.replace(" ", "-").lower()}')
             soup = BeautifulSoup(re.content, 'html.parser')
-
-            em.title = soup.find('h1').text.upper()+' Matrices' if soup.find('abbr') is None else soup.find('h1').text.upper() + ' Matrices [CN]'
+ 
+            em.title = soup.find('h1').text.upper()+' Matrices' if soup.find('abbr', title='China Exclusive') is None else soup.find('h1').text.upper() + ' Matrices [CN]'
             em.url = f'{tof_index}/matrices/{name.replace(" ", "-")}'
             em.set_thumbnail(url=tof_index+'/'+soup.find('img',class_='bg-img svelte-mpn75').get('src'))
 
