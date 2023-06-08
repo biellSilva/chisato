@@ -85,8 +85,8 @@ class Groups(commands.Cog):
                     return
             else:
                 error_embed.description = ('**Invalid HEX:**\n'
-                                           f'**Expected:** #20B2AA | Lenght: {len("#20B2AA")}\n'
-                                           f'**Received:** {color} | Lenght: {len(color)}')
+                                           f'**Expected:** #20B2AA - {len("#20B2AA")} digits\n'
+                                           f'**Received:** {color} - {len(color)} digits')
                 await interaction.edit_original_response(embed=error_embed)
                 return
         else:
@@ -110,7 +110,7 @@ class Groups(commands.Cog):
 
     @raid.command(name='unofficial', description='Create your own group for ToF raids')
     @app_commands.checks.has_role(config.tof_member)
-    @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
+    @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Extra information', color='hex color: #fcba03')
     async def raids(self, interaction: discord.Interaction, level: int, data: str, description: str, color: Optional[str]):
 
         '''Create your own group for ToF raids'''
@@ -173,7 +173,7 @@ class Groups(commands.Cog):
                         *Group start: <t:{data - 300}:F>, <t:{data - 300}:R>*
                         
                         Leader: {interaction.user.mention}
-                        Bosses: **{description}**
+                        **{description}**
                         ''')
 
         em.add_field(name='DPS', value='\u200B')
@@ -192,7 +192,7 @@ class Groups(commands.Cog):
 
     @raid.command(name='official')
     @app_commands.checks.has_permissions(kick_members=True)
-    @app_commands.describe(data='ex.: dd/mm/yyyy HH:MM', level='minimal level', description='Bosses', color='hex color: #fcba03')
+    @app_commands.describe(data='dd/mm/yyyy HH:MM', level='Minimal level', description='Extra info', color='Hex color: #fcba03', groups='How many groups?')
     @app_commands.choices(
         groups=[
             app_commands.Choice(name='8 Members / 1 Group', value='8'),

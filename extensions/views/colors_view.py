@@ -92,3 +92,18 @@ class ColorsView(discord.ui.View):
     async def button_12(self, interaction: discord.Interaction, button: discord.ui.Button):
 
         await ensure_group(interaction, button)
+    
+    @discord.ui.button(custom_id='13', label='13', style=discord.ButtonStyle.grey)
+    async def button_13(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        await ensure_group(interaction, button)
+
+    @discord.ui.button(custom_id='14', label='14', style=discord.ButtonStyle.grey)
+    async def button_14(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        await ensure_group(interaction, button)
+
+    @discord.ui.button(custom_id='15', label='15', style=discord.ButtonStyle.grey)
+    async def button_15(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        await ensure_group(interaction, button)

@@ -1,4 +1,7 @@
+import discord
+
 from discord.ext import commands
+from extensions import config
 
 
 class Tag(commands.Cog):
@@ -18,9 +21,26 @@ class Tag(commands.Cog):
         if ctx.interaction:
             await ctx.interaction.response.defer()
         
-        channel = ctx.guild.get_channel(1093316378691387473)
-        await ctx.send(channel.name)
-        print(channel)
+        channel = ctx.guild.get_channel(config.dicas)
+
+        em = discord.Embed(color=config.cinza,
+                           description='')
+
+        for thread in channel.threads:
+            if search.lower() in thread.name.lower():
+                em.description += f'{thread.mention}\n'
+
+        async for thread in channel.archived_threads():
+            if search.lower() in thread.name.lower():
+                em.description += f'{thread.mention}\n'
+
+        if em.description == '':
+            em.description = f'Couldn\'t find anything related to {search}'
+        else:
+            em.title = 'Related channel\'s'
+
+        await ctx.send(embed=em)
+
 
 async def setup(bot):
     await bot.add_cog(Tag(bot))

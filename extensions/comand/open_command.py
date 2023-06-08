@@ -18,19 +18,25 @@ class Commands(commands.Cog):
 
 
     @commands.hybrid_command(name='avatar', with_app_command=True)
-    @app_commands.describe(member='Select a member')
-    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member]):
+    @app_commands.describe(member='Select a member', guild='Guild icon')
+    @app_commands.choices(guild=[app_commands.Choice(name='Guild Icon', value='guild')])
+    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member], guild: Optional[str]):
 
-        ''' Member Avatar '''
+        ''' Member Avatar or Guild Icon'''
 
         member = member or ctx.author
 
-        em = discord.Embed(
-            color=config.cinza,
-            timestamp=datetime.datetime.now(tz=config.tz_brazil))
-        em.set_image(url=member.display_avatar)
-        em.set_footer(text=f'{member.display_name}',
-                      icon_url=member.display_avatar)
+        em = discord.Embed(color=config.cinza,
+                           timestamp=datetime.datetime.now(tz=config.tz_brazil))
+        if member:
+            em.set_image(url=member.display_avatar)
+            em.set_footer(text=f'{member.display_name}',
+                          icon_url=member.display_avatar)
+        
+        if guild:
+            em.set_image(url=ctx.guild.icon.url)
+            em.set_footer(text=f'{ctx.guild.name} - {ctx.guild.member_count}',
+                          icon_url=ctx.guild.icon.url)
 
         await ctx.send(embed=em)
 
