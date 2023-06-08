@@ -10,20 +10,17 @@ from extensions import config
 class Dumbot(commands.Bot):
     def __init__(self, intents: discord.Intents):
         super().__init__(command_prefix='c!', intents=intents, case_insensitive=True, strip_after_prefix=True)
-        self.initial_extensions = []
+
 
     async def setup_hook(self):
         self.task = self.loop.create_task(self.ch_pr())
 
         for folder in os.listdir('./extensions'):
-
             if not folder.endswith('.py') and not folder == 'views':
                 for filename in os.listdir(f'./extensions/{folder}'):
                     if filename.endswith('.py'):
                         await self.load_extension(f'extensions.{folder}.{filename[:-3]}')
-                        self.initial_extensions.append(filename[:-3])
-
-        print(self.initial_extensions)
+                        print(f'{folder}.{filename[:-3]} loaded')
 
     async def on_ready(self):
         print(f'''
@@ -42,7 +39,7 @@ class Dumbot(commands.Bot):
 
 bot = Dumbot(intents=discord.Intents.all())
 
-env_path = dotenv.find_dotenv()
-chisato = dotenv.get_key(dotenv_path=env_path, key_to_get='chisato')
+
+chisato = dotenv.get_key(dotenv_path=dotenv.find_dotenv(), key_to_get='chisato')
 
 bot.run(token=chisato)
