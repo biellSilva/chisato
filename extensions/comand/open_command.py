@@ -26,8 +26,8 @@ class Commands(commands.Cog):
 
         member = member or ctx.author
 
-        em = discord.Embed(color=config.cinza,
-                           timestamp=datetime.datetime.now(tz=config.tz_brazil))
+        em = discord.Embed(color=config.cinza)
+        
         if member:
             em.set_image(url=member.display_avatar)
             em.set_footer(text=f'{member.display_name}',
@@ -35,7 +35,7 @@ class Commands(commands.Cog):
         
         if guild:
             em.set_image(url=ctx.guild.icon.url)
-            em.set_footer(text=f'{ctx.guild.name} - {ctx.guild.member_count}',
+            em.set_footer(text=f'{ctx.guild.name} - {ctx.guild.member_count} members',
                           icon_url=ctx.guild.icon.url)
 
         await ctx.send(embed=em)

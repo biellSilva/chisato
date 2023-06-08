@@ -1,6 +1,8 @@
 import discord
 
 from discord.ext import commands
+from discord import app_commands
+
 from extensions import config
 
 
@@ -11,35 +13,33 @@ class Tag(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.hybrid_command(name='tag')
-    async def tag(self, ctx: commands.Context, search: str):
+    @app_commands.command(name='tag')
+    async def tag(self, interaction: discord.Interaction, search: str):
         ''' 
         Tag command will look through all channels and 
         return those that contains your variable on the title 
         '''
-
-        if ctx.interaction:
-            await ctx.interaction.response.defer()
+        await interaction.response.defer()
         
-        channel = ctx.guild.get_channel(config.dicas)
+        channel = interaction.guild.get_channel(config.dicas)
 
         em = discord.Embed(color=config.cinza,
                            description='')
 
         for thread in channel.threads:
             if search.lower() in thread.name.lower():
-                em.description += f'{thread.mention}\n'
+                em.description += f'{thread.jump_url}\n'
 
         async for thread in channel.archived_threads():
             if search.lower() in thread.name.lower():
-                em.description += f'{thread.mention}\n'
+                em.description += f'{thread.jump_url}\n'
 
         if em.description == '':
             em.description = f'Couldn\'t find anything related to {search}'
         else:
             em.title = 'Related channel\'s'
 
-        await ctx.send(embed=em)
+        await interaction.edit_original_response(embed=em)
 
 
 async def setup(bot):
