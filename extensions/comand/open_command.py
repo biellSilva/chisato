@@ -18,9 +18,8 @@ class Commands(commands.Cog):
 
 
     @commands.hybrid_command(name='avatar', with_app_command=True)
-    @app_commands.describe(member='Select a member', guild='Guild icon')
-    @app_commands.choices(guild=[app_commands.Choice(name='Guild Icon', value='guild')])
-    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member], guild: Optional[str]):
+    @app_commands.describe(member='Select a member')
+    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member]):
 
         ''' Member Avatar or Guild Icon'''
 
@@ -28,20 +27,14 @@ class Commands(commands.Cog):
 
         em = discord.Embed(color=config.cinza)
         
-        if member:
-            em.set_image(url=member.display_avatar)
-            em.set_footer(text=f'{member.display_name}',
-                          icon_url=member.display_avatar)
-        
-        if guild:
-            em.set_image(url=ctx.guild.icon.url)
-            em.set_footer(text=f'{ctx.guild.name} - {ctx.guild.member_count} members',
-                          icon_url=ctx.guild.icon.url)
+        em.set_image(url=member.display_avatar)
+        em.set_footer(text=f'{member.display_name}',
+                      icon_url=member.display_avatar)
 
         await ctx.send(embed=em)
 
 
-    @commands.hybrid_command(name='unixtime', with_app_command=True)
+    @commands.hybrid_command(name='unixtime', aliases=['unix', 'ut'], with_app_command=True)
     @app_commands.describe(date='dd/mm/yyyy', hour='HH:MM')
     async def unixtime(self, ctx: commands.Context, date: Optional[str], hour: Optional[str]):
 
