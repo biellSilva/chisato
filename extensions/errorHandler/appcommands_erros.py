@@ -59,13 +59,23 @@ class AppErrorHandler(commands.Cog):
             if err.code == 50007:
                 em.description = 'I can\'t send DM\'s to you, try allowing to receive DM\'s from here'
         
-        print_exception(type(err), err, err.__traceback__, file=stderr)
+        if em.description != '' and interaction.response.is_done():
+            await interaction.edit_original_response(embed=em)
 
-        txt = ''
-        for _ in traceback.format_exception(type(err), err, err.__traceback__):
-            txt += _+'\n'
+        elif em.description != '' and not interaction.response.is_done():
+            await interaction.response.send_message(embed=em, ephemeral=True)
 
-        await self.bot.get_user(self.bot.application.owner.id).send(content=f'```{txt}```')
+        else:
+            txt_err = ''.join(traceback.format_exception(type(err), err, err.__traceback__))
+            txt_err = f'```{txt_err}```'
+            
+            if len(txt_err) < 2000:
+                await self.bot.application.owner.send(txt_err)
+            else:
+                await self.bot.application.owner.send(f'```Error\n{err}```')
+
+            print(file=stderr)
+            print_exception(type(err), err, err.__traceback__, file=stderr)
 
 
 async def setup(bot: commands.Bot):
