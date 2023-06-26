@@ -18,8 +18,13 @@ class Commands(commands.Cog):
 
 
     @commands.hybrid_command(name='avatar', with_app_command=True)
-    @app_commands.describe(member='Select a member')
-    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member]):
+    @app_commands.describe(member='Select a member', image='Select between discord or guild avatar')
+    @app_commands.choices(
+        image=[
+            app_commands.Choice(name='Discord Avatar', value=1),
+            app_commands.Choice(name='Guild Avatar', value=0)
+            ])
+    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member], image: Optional[int] = 0):
 
         ''' Member Avatar or Guild Icon'''
 
@@ -27,9 +32,14 @@ class Commands(commands.Cog):
 
         em = discord.Embed(color=config.cinza)
         
-        em.set_image(url=member.display_avatar)
-        em.set_footer(text=f'{member.display_name}',
-                      icon_url=member.display_avatar)
+        if not image:
+            em.set_image(url=member.display_avatar)
+            em.set_footer(text=member.display_name,
+                          icon_url=member.display_avatar.url)
+        else:
+            em.set_image(url=member.avatar)
+            em.set_footer(text=member.name,
+                          icon_url=member.avatar.url)
 
         await ctx.send(embed=em)
 
