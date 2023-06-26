@@ -17,31 +17,32 @@ class Commands(commands.Cog):
         self.bot = bot
 
 
-    @commands.hybrid_command(name='avatar', with_app_command=True)
+    @app_commands.command(name='avatar')
     @app_commands.describe(member='Select a member', image='Select between discord or guild avatar')
     @app_commands.choices(
         image=[
-            app_commands.Choice(name='Discord Avatar', value=1),
-            app_commands.Choice(name='Guild Avatar', value=0)
+            app_commands.Choice(name='Guild Avatar', value=0),
+            app_commands.Choice(name='Discord Avatar', value=1)
             ])
-    async def avatar(self, ctx: commands.Context, member: Optional[discord.Member], image: Optional[int] = 0):
+    async def avatar(self, interaction: discord.Interaction, member: Optional[discord.Member], image: Optional[int] = 0):
 
-        ''' Member Avatar or Guild Icon'''
+        ''' Member Avatar or Banner'''
 
-        member = member or ctx.author
-
+        member = member or interaction.user
         em = discord.Embed(color=config.cinza)
         
-        if not image:
-            em.set_image(url=member.display_avatar)
+        if image == 0:
+            em.set_image(url=member.display_avatar.url)
             em.set_footer(text=member.display_name,
                           icon_url=member.display_avatar.url)
-        else:
-            em.set_image(url=member.avatar)
-            em.set_footer(text=member.name,
+        elif image == 1:
+            em.set_image(url=member.avatar.url)
+            em.set_footer(text=f'{member.name} | {member.global_name}',
                           icon_url=member.avatar.url)
+        else:
+            em.description=f'Argument `image` can\'t be {image}'
 
-        await ctx.send(embed=em)
+        await interaction.response.send_message(embed=em)
 
 
     @commands.hybrid_command(name='unixtime', aliases=['unix', 'ut'], with_app_command=True)
@@ -83,3 +84,15 @@ class Commands(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Commands(bot))
+
+
+
+
+
+
+
+'''
+
+amanha entrevista, as 16 horas
+
+'''
