@@ -38,16 +38,13 @@ class AppErrorHandler(commands.Cog):
             return
 
         if isinstance(err, app_commands.MissingPermissions):
-            em.description='Missing permission' + '\n'.join(err.args)
+            em.description='\n'.join(err.args)
 
         if isinstance(err, app_commands.MissingRole):
             em.description=f'Missing role {interaction.guild.get_role(int(err.missing_role)).mention}'
         
         if isinstance(err, app_commands.BotMissingPermissions):
             em.description='\n'.join(err.args)
-            
-        if isinstance(err, NameError):
-            em.description = 'Couldn\'t find'
 
         if isinstance(err, app_commands.CommandOnCooldown):
             em.description = f'Command on cooldown\n<t:{int(time() + err.retry_after)}:R>' 
@@ -59,6 +56,10 @@ class AppErrorHandler(commands.Cog):
             if err.code == 50007:
                 em.description = 'I can\'t send DM\'s to you, try allowing to receive DM\'s from here'
         
+        if isinstance(err, discord.HTTPException):
+            if err.code in (50035, 50138):
+                em.description = err.text
+
         if em.description != '' and interaction.response.is_done():
             await interaction.edit_original_response(embed=em)
 
@@ -68,7 +69,7 @@ class AppErrorHandler(commands.Cog):
         else:
             txt_err = ''.join(traceback.format_exception(type(err), err, err.__traceback__))
             txt_err = f'```{txt_err}```'
-            
+
             if len(txt_err) < 2000:
                 await self.bot.application.owner.send(txt_err)
             else:
