@@ -32,7 +32,7 @@ class On_member(commands.Cog):
         em.set_footer(text=f'{guild.member_count} members', icon_url=guild.icon.url)
         em.set_image(url='https://media.tenor.com/lfYGrPJlQLAAAAAd/oshi-no-ko-ruby.gif')
 
-        await welcome_channel.send(content={member.mention}, embed=em)
+        await welcome_channel.send(content=member.mention, embed=em)
 
 async def setup(bot):
     await bot.add_cog(On_member(bot))
