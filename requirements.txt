@@ -1,4 +1,4 @@
-discord.py == 2.2.2
+discord.py
 python_dotenv >= 0.20.0
 pytz >= 2022.5
 beautifulsoup4
