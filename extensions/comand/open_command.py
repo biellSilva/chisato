@@ -11,7 +11,7 @@ from extensions import config
 
 class Commands(commands.Cog):
 
-    '''Uncategorized Commands'''
+    ''' Uncategorized Commands '''
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -26,7 +26,7 @@ class Commands(commands.Cog):
             ])
     async def avatar(self, interaction: discord.Interaction, member: Optional[discord.Member], image: Optional[int] = 0):
 
-        ''' Member Avatar or Banner'''
+        ''' Member Avatar '''
 
         member = member or interaction.user
         em = discord.Embed(color=config.cinza)
@@ -85,14 +85,3 @@ class Commands(commands.Cog):
 async def setup(bot):
     await bot.add_cog(Commands(bot))
 
-
-
-
-
-
-
-'''
-
-amanha entrevista, as 16 horas
-
-'''
