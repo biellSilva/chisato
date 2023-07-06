@@ -9,6 +9,7 @@ from sys import stderr
 from time import time
 
 from extensions import config
+from extensions.utils import DatetimeFomartError
 
 
 class AppErrorHandler(commands.Cog):
@@ -59,6 +60,13 @@ class AppErrorHandler(commands.Cog):
         if isinstance(err, discord.HTTPException):
             if err.code in (50035, 50138):
                 em.description = err.text
+
+        if isinstance(err, DatetimeFomartError):
+            em.description = (f'**{err.date_str}** does not correspond to a datetime format\n\n'
+                              f'Expected:\n'
+                              f'`dd/mm/yyyy HH:MM` -> **day/month/year hour:minute**\n'
+                              f'`dd/mm/yyyy` -> **day/month/year 21:00**\n'
+                              f'`HH:MM` -> **today HH:MM**')
 
         if em.description != '' and interaction.response.is_done():
             await interaction.edit_original_response(embed=em)

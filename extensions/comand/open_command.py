@@ -7,6 +7,7 @@ from discord.ext import commands
 from typing import Optional
 
 from extensions import config
+from extensions.utils import check_date_format
 
 
 class Commands(commands.Cog):
@@ -18,7 +19,7 @@ class Commands(commands.Cog):
 
 
     @app_commands.command(name='avatar')
-    @app_commands.describe(member='Select a member', image='Select between discord or guild avatar')
+    @app_commands.describe(member='Select a member', image='Select between Discord or Guild avatar, default: Guild')
     @app_commands.choices(
         image=[
             app_commands.Choice(name='Guild Avatar', value=0),
@@ -39,8 +40,6 @@ class Commands(commands.Cog):
             em.set_image(url=member.avatar.url)
             em.set_footer(text=f'{member.name} | {member.global_name}',
                           icon_url=member.avatar.url)
-        else:
-            em.description=f'Argument `image` can\'t be {image}'
 
         await interaction.response.send_message(embed=em)
 
@@ -55,33 +54,27 @@ class Commands(commands.Cog):
             unixtime = int(time.time())
         
         elif date and hour:
-            unixtime = int(time.mktime(datetime.datetime.strptime(f'{date} {hour}', '%d/%m/%Y %H:%M').timetuple()))
+            unixtime = int(time.mktime(check_date_format(f'{date} {hour}')))
 
         else:
-            try:
-                unixtime = int(time.mktime(datetime.datetime.strptime(f'{date} 21:00', '%d/%m/%Y %H:%M').timetuple()))
-            except:
-                if not hour and not ctx.interaction:
-                    hour = date
-                unixtime = int(time.mktime(datetime.datetime.strptime(f'{datetime.date.today()} {hour}', '%Y-%m-%d %H:%M').timetuple()))
-
+            unixtime = int(time.mktime(check_date_format(date)))
 
         em = discord.Embed(color=config.cinza,
                            title='Discord Timestamps',
                            description=f'''
-                               \<t:{unixtime}> - <t:{unixtime}>
-                               \<t:{unixtime}:t> - <t:{unixtime}:t>
-                               \<t:{unixtime}:T> - <t:{unixtime}:T>
-                               \<t:{unixtime}:d> - <t:{unixtime}:d>
-                               \<t:{unixtime}:D> - <t:{unixtime}:D>
-                               \<t:{unixtime}:f> - <t:{unixtime}:f>
-                               \<t:{unixtime}:F> - <t:{unixtime}:F>
-                               \<t:{unixtime}:R> - <t:{unixtime}:R>
-                               ''')
+                           \<t:{unixtime}> - <t:{unixtime}>
+                           \<t:{unixtime}:t> - <t:{unixtime}:t>
+                           \<t:{unixtime}:T> - <t:{unixtime}:T>
+                           \<t:{unixtime}:d> - <t:{unixtime}:d>
+                           \<t:{unixtime}:D> - <t:{unixtime}:D>
+                           \<t:{unixtime}:f> - <t:{unixtime}:f>
+                           \<t:{unixtime}:F> - <t:{unixtime}:F>
+                           \<t:{unixtime}:R> - <t:{unixtime}:R>
+                           ''')
 
         await ctx.send(embed=em, ephemeral=True)
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(Commands(bot))
 
