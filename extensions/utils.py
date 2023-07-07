@@ -1,5 +1,6 @@
 from discord import Role
 from datetime import date, time, datetime
+from ast import literal_eval
 
 
 class DatetimeFomartError(Exception):
@@ -15,7 +16,7 @@ class NotMentionableRole(Exception):
         super().__init__(self.role)
 
 class InvalidHexFormat(Exception):
-    '''Called when the string isn\'t hex'''
+    '''Called when the string isn\'t hex format'''
     def __init__(self, hex: str):
         self.hex = hex
         super().__init__(self.hex)
@@ -47,3 +48,19 @@ def check_date_format(raw_date: str):
     return datetime_obj
 
 
+def check_color_hex(color: str):
+
+    '''
+    takes in a string to convert and returns a hex color object 
+    '''
+    
+    if len(color) == len('#fcba03'):
+        try:
+            color = literal_eval(color.replace(' ', '').replace('#', '0x'))
+        except:
+            raise InvalidHexFormat(color)
+        
+        return color
+    
+    else:
+        raise InvalidHexFormat(color)

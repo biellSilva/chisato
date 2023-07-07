@@ -9,7 +9,7 @@ from sys import stderr
 from time import time
 
 from extensions import config
-from extensions.utils import DatetimeFomartError
+from extensions.utils import DatetimeFomartError, InvalidHexFormat, NotMentionableRole
 
 
 class AppErrorHandler(commands.Cog):
@@ -67,6 +67,16 @@ class AppErrorHandler(commands.Cog):
                               f'`dd/mm/yyyy HH:MM` -> **day/month/year hour:minute**\n'
                               f'`dd/mm/yyyy` -> **day/month/year 21:00**\n'
                               f'`HH:MM` -> **today HH:MM**')
+            
+        if isinstance(err, InvalidHexFormat):
+            em.description = (f'Invalid HEX format: **{err.hex}**\n'
+                              'Expected: **#20B2AA**')
+
+        if isinstance(err, NotMentionableRole):
+            em.description = f'{err.role} is not mentionable'
+
+
+
 
         if em.description != '' and interaction.response.is_done():
             await interaction.edit_original_response(embed=em)
