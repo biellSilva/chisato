@@ -57,7 +57,7 @@ class GroupsView(discord.ui.View):
 
         em = discord.Embed(color=config.cinza, description='')
 
-        if not interaction.user.guild_permissions.kick_members and interaction.user.id not in interaction.message.embeds[0].footer.text:
+        if not interaction.user.guild_permissions.kick_members and str(interaction.user.id) not in interaction.message.embeds[0].footer.text:
            em.description = 'You do not have permissions for this'
            return await interaction.response.send_message(embed=em, ephemeral=True, delete_after=10)
 
