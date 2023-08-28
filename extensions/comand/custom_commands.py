@@ -44,7 +44,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
                     'name': name,
                     'content': content,
                     'file': None if not file else f'{interaction.user.id}_{name.lower()}.{file.content_type.split("/")[1]}',
-                    'file_format': None if not file else {file.content_type.split("/")[1]},
+                    'file_format': None if not file else file.content_type.split("/")[1],
                     'author': interaction.user.name,
                     'author_id': str(interaction.user.id)
                 }
