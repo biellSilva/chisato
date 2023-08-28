@@ -14,7 +14,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
         if not path.exists('./extensions/assets/custom_commands'):
             makedirs('./extensions/assets/custom_commands')
 
-        if not path.exists('./extensions/database'):
+        if not path.exists('./extensions/database/CustomCommands.json'):
             makedirs('./extensions/database')
             with open('./extensions/database/CustomCommands.json', 'w') as f:
                 data = json.dumps({}, indent=2)
