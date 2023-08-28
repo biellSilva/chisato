@@ -72,7 +72,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
                 data = self.data[command.lower()]
                 
                 if data['file']:
-                    file = open(f'./extensions/assets/custom_commands/{data["author_id"]}_{data["name"].lower()}.{data["file_format"]}')
+                    file = discord.File(f'./extensions/assets/custom_commands/{data["author_id"]}_{data["name"].lower()}.{data["file_format"]}')
                 else:
                     file = None
 
