@@ -12,9 +12,14 @@ class UpdatesAlertsCog(commands.Cog):
     async def updates_alert(self, message: discord.Message):
 
         if message.author.id in (1119694027688787999, 1093576369281179768, 1093576407268995072, 1093576439300894801):
+                                    # leaks global      # social media      # game announcement     # tof codes
+            # global ping
             await message.reply(content='<@&1093579221756026990>')
         
         elif message.author.id == (1119694952000147618, 1119694073675120770):
+                                    # leak cn               # cn announcement
+
+            # cn ping
             await message.reply(content='<@&1093579258573623379>')
 
 
