@@ -9,7 +9,7 @@ from extensions import config
 
 class Dumbot(commands.Bot):
     def __init__(self, intents: discord.Intents):
-        super().__init__(command_prefix='c!', intents=intents, case_insensitive=True, strip_after_prefix=True)
+        super().__init__(command_prefix='c!', intents=intents, case_insensitive=True, strip_after_prefix=True, help_command=None)
 
 
     async def setup_hook(self):
