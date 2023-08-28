@@ -36,14 +36,15 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
 
         else:
             if file:
-                await file.save(f'./extensions/assets/custom_commands/{interaction.user.id}_{name.lower()}.{file.content_type}')
+                with open(f'./extensions/assets/custom_commands/{interaction.user.id}_{name.lower()}.{file.content_type.split("/")[1]}', 'wb') as f:
+                    f.write(await file.read())
 
             self.data.update({
                 name.lower() : {
                     'name': name,
                     'content': content,
-                    'file': None if not file else f'{interaction.user.id}_{name.lower()}.{file.content_type}',
-                    'file_format': None if not file else {file.content_type},
+                    'file': None if not file else f'{interaction.user.id}_{name.lower()}.{file.content_type.split("/")[1]}',
+                    'file_format': None if not file else {file.content_type.split("/")[1]},
                     'author': interaction.user.name,
                     'author_id': str(interaction.user.id)
                 }
