@@ -59,8 +59,7 @@ class Groups(commands.Cog):
         em = discord.Embed(title=f'{event.name}',
                            color=color,
                            description=f'*Starts **<t:{date}:R>**, **<t:{date}:F>***\n'
-                                       f'**(the time is automatically converted to your local timezone)**\n\n'
-                                       f'{"" if description is None else f"**{description}**"}',
+                                       f'**(the time is automatically converted to your local timezone)**',
                            timestamp=datetime.datetime.fromtimestamp(date))
         
         if level:
@@ -69,7 +68,7 @@ class Groups(commands.Cog):
         if description:
             em.description += f'\n\n**{description}**'
         
-        em.set_footer(text=interaction.user.id, icon_url=interaction.user.display_avatar)
+        em.set_footer(text=f'{interaction.user.name} - {interaction.user.id}', icon_url=interaction.user.display_avatar)
 
         em.add_field(name='Members', value='\u200B')
 
@@ -122,7 +121,7 @@ class Groups(commands.Cog):
         if description:
             em.description += f'\n\n**{description}**'
         
-        em.set_footer(text=interaction.user.id, icon_url=interaction.user.display_avatar)
+        em.set_footer(text=f'{interaction.user.name} - {interaction.user.id}', icon_url=interaction.user.display_avatar)
 
         em.add_field(name='DPS', value='\u200B')
         em.add_field(name='SUP', value='\u200B')

@@ -24,7 +24,7 @@ class RandomContextMenus(commands.Cog):
     async def cog_unload(self):
         self.bot.tree.remove_command(self.add_emote.name, type=self.add_emote.type)
     
-
+    
     @app_commands.checks.has_permissions(manage_messages=True)
     async def add_emote_menu(self, interaction: discord.Interaction, message: discord.Message):
         
@@ -32,15 +32,12 @@ class RandomContextMenus(commands.Cog):
 
         await interaction.response.defer()
 
-        em = discord.Embed(color=config.cinza, title='Add Emote', description='')
         names: list = message.content.split()
 
         for name, emoji in zip(names, message.attachments):
             added_emote = await interaction.guild.create_custom_emoji(name=name, image=await emoji.read())
-            em.add_field(name=added_emote.name, value=added_emote)
-
-        await interaction.edit_original_response(embed=em)
+            await interaction.edit_original_response(content=added_emote)
         
     
-async def setup(bot):
+async def setup(bot: commands.Bot):
     await bot.add_cog(RandomContextMenus(bot))

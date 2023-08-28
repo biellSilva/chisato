@@ -57,72 +57,71 @@ class Raids_Context(commands.Cog):
         await interaction.edit_original_response(content=msg)
         return
 
+
+    @app_commands.default_permissions(kick_members=True)
     async def adicionar_membro(self, interaction: discord.Interaction, message: discord.Message):
 
-        '''Add a member to the raid'''
+        '''Add a member to the group'''
 
         await interaction.response.defer(ephemeral=True, thinking=True)
 
-        embed = message.embeds
+        em = discord.Embed(color=config.cinza, 
+                           description=f'Inform a member and his function if possible \nex.: {interaction.user.mention} dps')
 
-        em = discord.Embed(color=config.cinza, description='')
-
-        if not interaction.user.guild_permissions.kick_members:
-            em.description = 'You do not have permissions for this'
-            await interaction.edit_original_response(embed=em)
-            return
-
-        em.description = f'Inform a member and his function\nex.: @biell dps'
         await interaction.edit_original_response(embed=em)
 
         def check(response: discord.Message):
-            return response.author == interaction.user and response.channel == interaction.channel
+            return (response.author == interaction.user 
+                    and response.channel == interaction.channel 
+                    and len(response.mentions) == 1 
+                    and response.mentions[0].id not in (self.bot.application.id, interaction.user.id)
+                    and not response.mentions[0].bot)
 
         response: discord.Message = await self.bot.wait_for('message', check=check)
 
-        try:
-            membro = response.mentions[0]
-        except:
-            em.description=f'A member mention is needed'
-            await interaction.edit_original_response(embed=em)
-            return await response.delete()
-        
-        cargo = response.content.split(' ')[1]
+        membro = response.mentions[0]
+        embed = message.embeds[0]
 
-        if cargo not in ('dps', 'sup', 'tank'):
-            em.description=f'{cargo} is not accepted\nExpected: `DPS`, `SUP`, `TANK`'
-            await interaction.edit_original_response(embed=em)
-            return await response.delete()
-
-        for field in embed[0].fields:
+        for field in embed.fields:
             if membro.mention in field.value:
                 em.description = f'**{membro.mention}** already in **{field.name}**'
                 await interaction.edit_original_response(embed=em)
                 await response.delete()
                 return
 
-        for field in embed[0].fields:
-            if cargo.lower() in field.name.lower():
-                if 'dps' in field.name.lower():
-                    ind = 0
-                if 'sup' in field.name.lower():
-                    ind = 1
-                if 'tank' in field.name.lower():
-                    ind = 2
 
-                if int(embed[1].fields[ind].value) <= 0:
-                    em.description = f'**{field.name}** is full'
-                    return await interaction.edit_original_response(embed=em)
+        if len(response.content.split()) == 2:
+            cargo = response.content.split(' ')[1]
 
-                embed[0].set_field_at(ind, name=field.name, value=field.value+f'\n{membro.mention}')
-                embed[1].set_field_at(ind, name=embed[1].fields[ind].name, value=int(embed[1].fields[ind].value)-1)
+            if cargo.lower() not in ('dps', 'sup', 'tank'):
+                em.description = f'**{cargo}** isn\'t a valid option\nExpected: `DPS`, `SUP` or `TANK`'
+                return await interaction.followup.send(embed=em, ephemeral=True)
+            
 
-                await message.edit(embeds=embed)
+        if len(message.embeds) == 2:
+            slot_embed = message.embeds[1]
+            
+            for field in embed.fields:
+                if cargo.lower() in field.name.lower():
+                    ind = embed.fields.index(field)
+
+                    if int(slot_embed.fields[ind].value) <= 0:
+                        em.description = f'**{field.name}** is full'
+                        return await interaction.edit_original_response(embed=em)
+                        
+                    slot_embed.set_field_at(ind, name=slot_embed.fields[ind].name, value=int(slot_embed.fields[ind].value)-1)
+                    embed.set_field_at(ind, name=field.name, value=field.value+f'\n{membro.mention}')
+                    break
+
                 em.description = f'**{membro}** added to **{field.name}**'
+
+                await message.edit(embeds=[embed, slot_embed])
                 await interaction.edit_original_response(embed=em)
                 await response.delete()
                 return
 
+
+    @app_commands.default_permissions(kick_members=True)
     async def remover_membro(self, interaction: discord.Interaction, message: discord.Message):
         '''Remover o Membro'''
 
