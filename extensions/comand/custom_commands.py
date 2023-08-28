@@ -1,5 +1,6 @@
 import discord
 import json
+import simplejson
 
 from discord import app_commands
 from discord.ext import commands
@@ -17,11 +18,11 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
         if not path.exists('./extensions/database'):
             makedirs('./extensions/database')
             with open('./extensions/database/CustomCommands.json', 'w') as f:
-                data = json.dumps(obj={})
+                data = json.dumps({}, indent=2)
                 f.write(data)
 
         with open('./extensions/database/CustomCommands.json', 'r') as f:
-            self.data: dict = json.loads(f.read())
+            self.data: dict = simplejson.loads(f.read())
 
 
     @app_commands.command(name='add')
