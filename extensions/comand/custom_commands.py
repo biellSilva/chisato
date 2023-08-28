@@ -19,8 +19,8 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
             with open('./extensions/database/CustomCommands.json', 'w') as f:
                 data = json.dumps(obj={})
                 f.write(data)
-                
-        with open('./extensions/database/CustomCommands.json', 'w') as f:
+
+        with open('./extensions/database/CustomCommands.json', 'r') as f:
             self.data: dict = json.loads(f.read())
 
 
