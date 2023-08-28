@@ -69,12 +69,6 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
 
                 await message.reply(content=data["content"], file=file)
 
-        
-
-
-
-
-
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(CustomCommandsCog(bot))
