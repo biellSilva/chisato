@@ -71,7 +71,7 @@ class Admin(commands.Cog):
 
         await interaction.edit_original_response(content='Done!')
     
-    @admin.commmand(name='role')
+    @admin.command(name='role')
     @app_commands.checks.has_permissions(manage_messages=True)
     async def role_comand(self, interaction: discord.Interaction):
         role = interaction.guild.get_role(1116380664367951883)
