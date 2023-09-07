@@ -75,7 +75,7 @@ class Admin(commands.Cog):
     @app_commands.checks.has_permissions(manage_messages=True)
     async def role_comand(self, interaction: discord.Interaction):
         role = interaction.guild.get_role(1116380664367951883)
-        await role._move(4)
+        await role._move(4, 'a')
 
         await interaction.response.send_message('feito')
 
