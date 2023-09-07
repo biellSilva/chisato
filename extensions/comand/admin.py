@@ -70,6 +70,14 @@ class Admin(commands.Cog):
             await interaction.channel.purge(limit=limit, reason=f'{interaction.user} deleted')
 
         await interaction.edit_original_response(content='Done!')
+    
+    @admin.commmand(name='role')
+    @app_commands.checks.has_permissions(manage_messages=True)
+    async def role_comand(self, interaction: discord.Interaction):
+        role = interaction.guild.get_role(1116380664367951883)
+        await role._move(4)
+
+        await interaction.response.send_message('feito')
 
 async def setup(bot):
     await bot.add_cog(Admin(bot))
