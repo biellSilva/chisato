@@ -13,16 +13,17 @@ class Guides(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name='guide')
+    @commands.hybrid_command(name='guides', aliases=['guias', 'guia'])
     @app_commands.describe(search='Term that u are looking for')
-    async def guide(self, interaction: discord.Interaction, search: str):
+    async def guide(self, ctx: commands.Context, search: str):
         ''' 
         Will look through the guide channel and return those that contains what u need
         '''
 
-        await interaction.response.defer()
+        if ctx.interaction:
+            await ctx.interaction.response.defer()
         
-        channel = interaction.guild.get_channel(config.dicas)
+        channel = ctx.guild.get_channel(config.dicas)
 
         em = discord.Embed(color=config.cinza,
                            description='')
@@ -40,7 +41,7 @@ class Guides(commands.Cog):
         else:
             em.title = 'Related guides'
 
-        await interaction.edit_original_response(embed=em)
+        await ctx.reply(embed=em)
 
 
 async def setup(bot: commands.Bot):
