@@ -38,7 +38,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
             await interaction.edit_original_response(content=f'{name.lower()} já existe como comando')
             return
         
-        if '<@' in name or '<@' in content:
+        if '<@' in name or (content and '<@' in content):
             await interaction.edit_original_response(content=f'sem menção no comando!!')
 
         else:
@@ -77,7 +77,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
             await interaction.edit_original_response(content=f'{name.lower()} não lhe pertence')
             return
         
-        if '<@' in name or '<@' in content:
+        if '<@' in name or (content and '<@' in content):
             await interaction.edit_original_response(content=f'sem menção no comando!!')
 
         else:
