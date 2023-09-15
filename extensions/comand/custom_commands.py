@@ -126,7 +126,13 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
                 f.write(data)
         
             await interaction.edit_original_response(content=f'c!{name.lower()} deletado')
+    
+    @app_commands.command(name='list')
+    async def delete_commando(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
 
+        embed = discord.Embed(description='\n'.join(f'{data["name"]} - <@{data["author_id"]}>' for comando, data in self.data.items()))
+        await interaction.edit_original_response(embed=embed)
     
     @commands.Cog.listener(name='on_message')
     async def custom_command_response(self, message: discord.Message):
