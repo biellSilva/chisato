@@ -73,7 +73,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
 
         comando: dict[str, str | int | None] = self.data.get(name.lower())
 
-        if interaction.user.id != comando.get('author_id'):
+        if str(interaction.user.id) != comando.get('author_id') and not interaction.user.guild_permissions.administrator:
             await interaction.edit_original_response(content=f'{name.lower()} não lhe pertence')
             return
         
@@ -113,7 +113,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
 
         comando: dict[str, str | int | None] = self.data.get(name.lower())
 
-        if interaction.user.id != comando.get('author_id') and not interaction.user.guild_permissions.administrator:
+        if str(interaction.user.id) != comando.get('author_id') and not interaction.user.guild_permissions.administrator:
             await interaction.edit_original_response(content=f'{name.lower()} não lhe pertence')
             return
         
