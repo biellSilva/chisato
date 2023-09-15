@@ -90,7 +90,7 @@ class CustomCommandsCog(commands.GroupCog, group_name='commands', group_descript
                     'name': name,
                     'content': content,
                     'file': file if file else comando.get('file'),
-                    'file_format': None if not file else comando.get('file_format'),
+                    'file_format': comando.get('file_format') if not file else file.content_type.split("/")[1],
                     'author': interaction.user.name,
                     'author_id': str(interaction.user.id)
                 }
