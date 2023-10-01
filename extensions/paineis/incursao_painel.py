@@ -14,11 +14,11 @@ class Raids_Context(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         
-        self.lista_menu = app_commands.ContextMenu(
+        self.lista_nome = app_commands.ContextMenu(
             name='Listar Nome',
             callback=self.listagem_nome
         )
-        self.lista_menu = app_commands.ContextMenu(
+        self.lista_mencao = app_commands.ContextMenu(
             name='Listar Menção',
             callback=self.listagem_menção
         )
