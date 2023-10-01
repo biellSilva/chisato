@@ -15,8 +15,12 @@ class Raids_Context(commands.Cog):
         self.bot = bot
         
         self.lista_menu = app_commands.ContextMenu(
-            name='List Members',
-            callback=self.listagem
+            name='Listar Nome',
+            callback=self.listagem_nome
+        )
+        self.lista_menu = app_commands.ContextMenu(
+            name='Listar Menção',
+            callback=self.listagem_menção
         )
         self.membro_menu = app_commands.ContextMenu(
             name='Add Member',
@@ -40,8 +44,8 @@ class Raids_Context(commands.Cog):
             self.membro_menu_2.name, type=self.membro_menu_2.type)
         
 
-    async def listagem(self, interaction: discord.Interaction, message: discord.Message):
-        '''Listagem dos campos da embed'''
+    async def listagem_nome(self, interaction: discord.Interaction, message: discord.Message):
+        '''Lista os membros pelo nome'''
 
         await interaction.response.defer(thinking=True, ephemeral=True)
 
@@ -53,6 +57,19 @@ class Raids_Context(commands.Cog):
             for member in list(filter(None, field.value.replace('\u200B', '').split('\n'))):
                 new_member = interaction.guild.get_member(int(re.sub(r'[^0-9]', '', member)))
                 msg += f'\n{new_member.display_name}'
+
+        await interaction.edit_original_response(content=msg)
+        return
+    
+    async def listagem_menção(self, interaction: discord.Interaction, message: discord.Message):
+        '''Lista os membros pela menção'''
+
+        await interaction.response.defer(thinking=True)
+
+        msg = '**Waiting for:**\n'
+
+        for field in message.embeds[0].fields:
+            msg += f'\n\n**{field.name}**\n{field.value}'
 
         await interaction.edit_original_response(content=msg)
         return
