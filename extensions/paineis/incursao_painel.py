@@ -31,17 +31,16 @@ class Raids_Context(commands.Cog):
             callback=self.remover_membro
         )
 
-        self.bot.tree.add_command(self.lista_menu)
+        self.bot.tree.add_command(self.lista_nome)
+        self.bot.tree.add_command(self.lista_mencao)
         self.bot.tree.add_command(self.membro_menu)
         self.bot.tree.add_command(self.membro_menu_2)
 
     async def cog_unload(self):
-        self.bot.tree.remove_command(
-            self.lista_menu.name, type=self.lista_menu.type)
-        self.bot.tree.remove_command(
-            self.membro_menu.name, type=self.membro_menu.type)
-        self.bot.tree.remove_command(
-            self.membro_menu_2.name, type=self.membro_menu_2.type)
+        self.bot.tree.remove_command(self.lista_nome.name, type=self.lista_nome.type)
+        self.bot.tree.remove_command(self.lista_mencao.name, type=self.lista_mencao.type)
+        self.bot.tree.remove_command(self.membro_menu.name, type=self.membro_menu.type)
+        self.bot.tree.remove_command(self.membro_menu_2.name, type=self.membro_menu_2.type)
         
 
     async def listagem_nome(self, interaction: discord.Interaction, message: discord.Message):
