@@ -1,3 +1,4 @@
 discord.py
 python_dotenv >= 0.20.0
 pytz >= 2022.5
+pillow
