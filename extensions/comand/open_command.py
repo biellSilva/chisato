@@ -97,8 +97,14 @@ class Commands(commands.Cog):
         assert asura
 
         timeout_timer = datetime.fromtimestamp(
-            (asura.timed_out_until or datetime.now(tz=timezone("UTC"))).timestamp() + 30
-        ).astimezone(tz=timezone("UTC"))
+            (
+                asura.timed_out_until or datetime.now(tz=timezone("UTC"))
+                if asura.is_timed_out()
+                else datetime.now(tz=timezone("UTC"))
+            ).timestamp()
+            + 30,
+            tz=timezone("UTC"),
+        )
 
         em = discord.Embed(
             color=config.cinza,
