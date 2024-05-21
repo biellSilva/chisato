@@ -5,6 +5,7 @@ from typing import Any, Optional
 import discord
 from discord import app_commands
 from discord.ext import commands
+from pytz import timezone
 
 from extensions import config
 from extensions.utils import check_date_format
@@ -96,7 +97,7 @@ class Commands(commands.Cog):
         assert asura
 
         timeout_timer = datetime.fromtimestamp(
-            (asura.timed_out_until or datetime.now()).timestamp() + 30
+            (asura.timed_out_until or datetime.now(tz=timezone("UTC"))).timestamp() + 30
         )
 
         em = discord.Embed(
