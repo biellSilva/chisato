@@ -87,6 +87,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=em, ephemeral=True)
 
     @commands.hybrid_command(name="asura", with_app_command=True)
+    @commands.max_concurrency(1, per=commands.BucketType.guild, wait=False)
     async def asura_command(self, ctx: commands.Context[Any]):
         """Asura Command"""
 
